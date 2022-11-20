@@ -31,29 +31,4 @@ We will use hypothesis testing to check correlations between factors affecting l
 
 ### What statistical techniques do you think you may be using? Be as specific as possible; your github repo readme.md should be about a couple of paragraphs.
 
----
 
-## Topic idea 2 -  Formula 1 
-
-
-### What is your topic? 
-
-We wish to analyse data on the F1 sport. We have found different datasets that we will join to pursue our analysis. The data ranges from F1 pilots to time recordings of various races. 
-
-
-### What issues or questions are you addressing? 
-
-This dataset contains information on Formula One races that have taken place since 1950. This includes data on the drivers, teams, races, and results. We hope that this dataset will be useful in helping researchers understand more about Formula One racing and the factors that contribute to success on the track. We hope to answer the following questions with the dataset:
-- What characteristics affect the times of races?
-- What are the traits in a team that will make it more likely for it to win a race
-- What factors in a driver would impact their performance and the outcome of the race?
-- It is understood the popularity of Formula 1 races in different regions worldwide.
-
-
-
-### What is the source of the data you will be using? 
-[We have sourced our data from Kaggle. Kaggle provided 14 different folders that we then adapted for our usage.](https://www.kaggle.com/datasets/cjgdev/formula-1-race-data-19502017)
-
-
-### What statistical techniques do you think you may be using? 
-We plan to use logistic regression to predict drivers’ performance and outcomes of races.
