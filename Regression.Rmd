@@ -1,0 +1,104 @@
+---
+title: "Regression"
+output: html_document
+date: "2022-11-21"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+
+
+library(vroom)
+library(tidyverse)
+library(lubridate)
+library(ggmap)
+library(ggrepel)
+library(gridExtra)
+library(pander)
+library(here)
+library(sf)
+library(janitor)
+library(skimr)
+library(leaflet)
+library(tmap)
+library(tmaptools)
+library(hrbrthemes)
+library(mapview)
+library(viridis)
+library(dplyr)
+
+
+
+```
+
+
+#preparing data for regression
+```{r}
+
+
+lc=read.csv('data viz dataset/CLEANED-Life Expectancy - potential factors.csv')
+
+lc_clean=na.omit(lc)
+
+
+#filtering data to the latest available year (2014)
+lc_2014=lc_clean%>%filter(Year==2014)
+
+lc_2004=lc_clean%>%filter(Year==2004)
+
+lc_2000=lc_clean%>%filter(Year==2000)
+
+```
+
+#linear model on year 2014
+```{r}
+
+
+lm1 <-lm(Life.expectancy ~ Adult.Mortality + infant.deaths
+ +  BMI  + Polio + percentage.expenditure + Hepatitis.B +Measles 
++ under.five.deaths +Total.expenditure + Diphtheria + HIV.AIDS +GDP +Population + Income.composition.of.resources +Schooling+Alcohol,lc_2014)
+
+
+summary(lm1)
+
+```
+
+
+Based on multi-variable linear regression result, we can see that, in 2014, Income Composition of Resources, Adult Mortality, and HIV rate significantly impacts the average life expectancy in a particular country.
+
+
+#linear model on year 2004
+```{r}
+
+
+lm2 <-lm(Life.expectancy ~ Adult.Mortality + infant.deaths
+ +  BMI  + Polio + percentage.expenditure + Hepatitis.B +Measles 
++ under.five.deaths +Total.expenditure + Diphtheria + HIV.AIDS +GDP +Population + Income.composition.of.resources +Schooling+Alcohol,lc_2004)
+
+
+summary(lm2)
+
+```
+
+However, when we run multi-variable linear regression on year 2004 dataset, we can see that, in 2004, Income Composition of Resources no longer has an  impact on life expectancy. In its place, Schooling (education level) is significantly impacting average life expectany in a country.
+
+
+#linear model on year 2000
+```{r}
+
+
+lm3 <-lm(Life.expectancy ~ Adult.Mortality + infant.deaths
+ +  BMI  + Polio + percentage.expenditure + Hepatitis.B +Measles 
++ under.five.deaths +Total.expenditure + Diphtheria + HIV.AIDS +GDP +Population + Income.composition.of.resources +Schooling+Alcohol,lc_20)
+
+
+summary(lm3)
+
+
+```
+
+Based on multi-variable linear regression result, we can see that, in 2000, Schooling, Adult Mortality, infant (under-5 death rate) and HIV rate significantly impact the average life expectancy in a particular country.
