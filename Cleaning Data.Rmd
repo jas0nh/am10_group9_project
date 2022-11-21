@@ -1,0 +1,84 @@
+---
+title: "Cleaning Data"
+output: html_document
+date: "2022-11-10"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+#getting the pacakages ready
+```{r}
+library(vroom)
+library(tidyverse)
+library(lubridate)
+library(ggmap)
+library(ggrepel)
+library(gridExtra)
+library(pander)
+library(here)
+library(sf)
+library(janitor)
+library(skimr)
+library(leaflet)
+library(tmap)
+library(tmaptools)
+library(hrbrthemes)
+library(mapview)
+library(viridis)
+library(dplyr)
+
+```
+
+#read the infant immortality file and cleaning it
+```{r}
+
+
+
+
+df=read.csv(file = '(NEEDS CLEAN)-infant-inmortality.csv',header=F,skip=4) #read in data, remove the first 3 rows
+
+df=dplyr::filter(df,!is.na(V5)) #remove rows with NA values
+
+#glimpse(df)
+
+
+df=df[,-67]
+df=df[,-66]    #remove the last year's data in which data is incomplete
+
+
+write.table(df, file = "CLEANED-infant-mortality.csv", row.names = FALSE, na = "", col.names = FALSE, sep = ",")
+#storing the data in csv file, removing row name and column name
+
+
+
+```
+
+
+
+#read the life expectancy file and cleaning it
+
+```{r}
+
+
+
+
+df2=read.csv(file = '(NEEDS CLEAN)-life-expecantacy.csv',header=F,skip=4) #read in data, remove the first 3 rows
+
+df2=dplyr::filter(df,!is.na(V5)) #remove rows with NA values
+
+#glimpse(df2)
+
+
+df=df[,-67]
+df=df[,-66]    #remove the last year's data in which data is incomplete
+
+
+write.table(df2, file = "CLEANED-life-expectancy.csv", row.names = FALSE, na = "", col.names = FALSE, sep = ",")
+#storing the data in csv file, removing row name and column name
+
+
+
+```
