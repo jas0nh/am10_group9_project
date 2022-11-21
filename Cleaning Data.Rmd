@@ -36,20 +36,21 @@ library(dplyr)
 ```{r}
 
 
+df1 <- read_csv(file = 'data viz dataset/(NEEDS CLEAN)-infant-inmortality.csv',skip=4) 
+df1 <-df1[,-67]
+df1 <-df1[,-66]
+
+df1 <- df1 %>% 
+  drop_na() %>% 
+  pivot_longer(names_to = "year",
+               values_to = "infant_inmortality",
+               cols = -(1:4)) %>% 
+  janitor::clean_names()
 
 
-df=read.csv(file = '(NEEDS CLEAN)-infant-inmortality.csv',header=F,skip=4) #read in data, remove the first 3 rows
+glimpse(df1)
 
-df=dplyr::filter(df,!is.na(V5)) #remove rows with NA values
-
-#glimpse(df)
-
-
-df=df[,-67]
-df=df[,-66]    #remove the last year's data in which data is incomplete
-
-
-write.table(df, file = "CLEANED-infant-mortality.csv", row.names = FALSE, na = "", col.names = FALSE, sep = ",")
+write.table(df1, file = "data viz dataset/CLEANED-infant-mortality.csv", row.names = FALSE, na = "", sep = ",")
 #storing the data in csv file, removing row name and column name
 
 
@@ -62,23 +63,24 @@ write.table(df, file = "CLEANED-infant-mortality.csv", row.names = FALSE, na = "
 
 ```{r}
 
+#read in data, remove the first 3 rows
+df2 <- read_csv(file = 'data viz dataset/(NEEDS CLEAN) life-expectancy-2020.csv',skip=4) 
+df2 <-df2[,-67]
+df2 <-df2[,-66]
+
+df2 <- df2 %>% 
+  drop_na() %>% 
+  pivot_longer(names_to = "year",
+               values_to = "life_expectancy",
+               cols = -(1:4)) %>% 
+  janitor::clean_names()
 
 
-
-df2=read.csv(file = '(NEEDS CLEAN)-life-expecantacy.csv',header=F,skip=4) #read in data, remove the first 3 rows
-
-df2=dplyr::filter(df,!is.na(V5)) #remove rows with NA values
-
-#glimpse(df2)
+glimpse(df2)
 
 
-df=df[,-67]
-df=df[,-66]    #remove the last year's data in which data is incomplete
-
-
-write.table(df2, file = "CLEANED-life-expectancy.csv", row.names = FALSE, na = "", col.names = FALSE, sep = ",")
+write_csv(df2, file = "data viz dataset/CLEANED-life-expectancy-2020.csv", na = "")
 #storing the data in csv file, removing row name and column name
-
 
 
 ```
