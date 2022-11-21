@@ -62,9 +62,16 @@ lm1 <-lm(Life.expectancy ~ Adult.Mortality + infant.deaths
  +  BMI  + Polio + percentage.expenditure + Hepatitis.B +Measles 
 + under.five.deaths +Total.expenditure + Diphtheria + HIV.AIDS +GDP +Population + Income.composition.of.resources +Schooling+Alcohol,lc_2014)
 
-
 summary(lm1)
 
+
+#adjusting the linear model 
+
+lm_new1=lm(Life.expectancy ~ Adult.Mortality + Total.expenditure + HIV.AIDS + Income.composition.of.resources,lc_2014)
+  
+
+summary(lm_new1)
+  
 ```
 
 
@@ -82,6 +89,12 @@ lm2 <-lm(Life.expectancy ~ Adult.Mortality + infant.deaths
 
 summary(lm2)
 
+#adjusting the linear model 
+
+lm_new2=lm(Life.expectancy ~ Adult.Mortality + HIV.AIDS +Schooling,lc_2004)
+  
+summary(lm_new2)
+
 ```
 
 However, when we run multi-variable linear regression on year 2004 dataset, we can see that, in 2004, Income Composition of Resources no longer has an  impact on life expectancy. In its place, Schooling (education level) is significantly impacting average life expectany in a country.
@@ -93,11 +106,16 @@ However, when we run multi-variable linear regression on year 2004 dataset, we c
 
 lm3 <-lm(Life.expectancy ~ Adult.Mortality + infant.deaths
  +  BMI  + Polio + percentage.expenditure + Hepatitis.B +Measles 
-+ under.five.deaths +Total.expenditure + Diphtheria + HIV.AIDS +GDP +Population + Income.composition.of.resources +Schooling+Alcohol,lc_20)
++ under.five.deaths +Total.expenditure + Diphtheria + HIV.AIDS +GDP +Population + Income.composition.of.resources +Schooling+Alcohol,lc_2000)
 
 
 summary(lm3)
 
+
+lm_new3=lm(Life.expectancy ~ Adult.Mortality + HIV.AIDS +Schooling + Hepatitis.B
+,lc_2000)
+  
+summary(lm_new3)
 
 ```
 
