@@ -9,8 +9,9 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-#getting the pacakages ready
-```{r}
+## Clean the data
+
+```{r load library}
 library(vroom)
 library(tidyverse)
 library(lubridate)
@@ -29,11 +30,35 @@ library(hrbrthemes)
 library(mapview)
 library(viridis)
 library(dplyr)
+```
+
+
+```{r Health_Nutrition_and_Population}
+
+df1 <- read_csv(file = 'data viz dataset/Health_Nutrition_and_Population.csv', na = "..") 
+
+# df1 <-df1[,-67]
+# df1 <-df1[,-66]
+
+df1 <- df1 %>% 
+  pivot_longer(names_to = "year",
+               values_to = "value",
+               cols = -(1:4)) %>% 
+  mutate(year = substr(year,1,4)) %>% 
+  drop_na() %>% 
+  janitor::clean_names()
+
+
+glimpse(df1)
+
+write.table(df1, file = "data viz dataset/CLEANED-Health_Nutrition_and_Population.csv", row.names = FALSE, na = "", sep = ",")
+#storing the data in csv file, removing row name and column name
 
 ```
 
-#read the infant immortality file and cleaning it
-```{r}
+
+### read the infant immortality file and cleaning it
+```{r infant-inmortality}
 
 
 df1 <- read_csv(file = 'data viz dataset/(NEEDS CLEAN)-infant-inmortality.csv',skip=4) 
@@ -58,10 +83,9 @@ write.table(df1, file = "data viz dataset/CLEANED-infant-mortality.csv", row.nam
 ```
 
 
+### read the life expectancy file and cleaning it
 
-#read the life expectancy file and cleaning it
-
-```{r}
+```{r life-expectancy}
 
 #read in data, remove the first 3 rows
 df2 <- read_csv(file = 'data viz dataset/(NEEDS CLEAN) life-expectancy-2020.csv',skip=4) 
