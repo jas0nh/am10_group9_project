@@ -3,6 +3,36 @@ title: "Final_project"
 output: html_document
 date: "2022-11-21"
 ---
+#getting the pacakages ready
+```{r}
+library(vroom)
+library(tidyverse)
+library(lubridate)
+library(ggmap)
+library(ggrepel)
+library(gridExtra)
+library(pander)
+library(here)
+library(sf)
+library(janitor)
+library(skimr)
+library(leaflet)
+library(tmap)
+library(tmaptools)
+library(hrbrthemes)
+library(mapview)
+library(viridis)
+library(dplyr)
+```
+
+
+
+```{r}
+
+
+```
+
+
 
 # The Blue Zones: Why do some areas of the world have higher life expectancies than others ?
 
