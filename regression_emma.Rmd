@@ -34,8 +34,8 @@ library(dplyr)
 life_exp =read.csv('data viz dataset/CLEANED-Life Expectancy - potential factors.csv')
 health_nutrition=read.csv('data viz dataset/CLEANED-Health_Nutrition_and_Population 2.csv')
 
-health_life_joined <- health_nutrition %>% 
-  leftjoin(life_exp, by = c("country_name" = "Country" ))
+# health_life_joined <- health_nutrition %>% 
+#   left_join(life_exp, by = c("country_name" = "Country" ))
 
 health_life_joined <- merge(health_nutrition, life_exp, all.x = TRUE, by.x = c("country_name","year"), by.y = c("Country","Year"))
 
@@ -44,6 +44,8 @@ health_2014=health_life_joined%>%filter(year==2014)
 health_2004=health_life_joined%>%filter(year==2004)
 
 health_2000=health_life_joined%>%filter(year==2000)
+
+glimpse(health_life_joined)
 
 ```
 
