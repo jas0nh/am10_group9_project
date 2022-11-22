@@ -1,0 +1,40 @@
+---
+title: "data_vizualisations"
+output: html_document
+date: "2022-11-21"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(vroom)
+library(tidyverse)
+library(lubridate)
+library(ggmap)
+library(ggrepel)
+library(gridExtra)
+library(pander)
+library(here)
+library(sf)
+library(janitor)
+library(skimr)
+library(leaflet)
+library(tmap)
+library(tmaptools)
+library(hrbrthemes)
+library(mapview)
+library(viridis)
+library(dplyr)
+```
+
+```{r}
+
+
+health_nutrition=read.csv('data viz dataset/Health_Nutrition_Metadata.csv')
+
+health_nutrition_clean=na.omit(lc)
+
+```
+
