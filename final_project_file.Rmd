@@ -181,7 +181,7 @@ lc_2000=lc_clean%>%filter(Year==2000)
 
 lm1 <-lm(Life.expectancy ~ infant.deaths
  +  BMI  + Polio + percentage.expenditure + Hepatitis.B +Measles 
-+ under.five.deaths +Total.expenditure + Diphtheria + HIV.AIDS +GDP +Population + Income.composition.of.resources +Schooling+Alcohol,lc_2014)
++ under.five.deaths +Total.expenditure + Diphtheria + HIV.AIDS +GDP/Population + Income.composition.of.resources +Schooling+ Alcohol,lc_2014)
 
 summary(lm1)
 
@@ -229,9 +229,7 @@ lm3 <-lm(Life.expectancy ~  infant.deaths
  +  BMI  + Polio + percentage.expenditure + Hepatitis.B +Measles 
 + under.five.deaths +Total.expenditure + Diphtheria + HIV.AIDS +GDP +Population + Income.composition.of.resources +Schooling+Alcohol,lc_2000)
 
-
 summary(lm3)
-
 
 lm_new3=lm(Life.expectancy ~ Adult.Mortality + HIV.AIDS +Schooling + Hepatitis.B
 ,lc_2000)
@@ -244,5 +242,21 @@ Based on multi-variable linear regression result, we can see that, in 2000, Scho
 
 
 
+##Regression Visualization 
+
+```{r}
+
+
+
+
+
+
+
+```
+
 
 ### (5) Discussion and critique. What did you learn about the process of carrying out your project? What went wrong, and how could you improve it next time? For instance, did any sources of bias creep into your survey or experiment? What advice would you give future students? 
+
+
+
+
