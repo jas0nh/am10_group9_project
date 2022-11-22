@@ -112,7 +112,6 @@ glimpse(df2)
 write_csv(df2, file = "data viz dataset/CLEANED-life-expectancy-2020.csv", na = "")
 #storing the data in csv file, removing row name and column name
 
-
 ```
 
 ##some graph
@@ -126,6 +125,50 @@ gapminder %>% ggplot(aes(x = continent, y=lifeExp, group_by = year, colour = con
   labs(title = "Life Expectancy of Different Continents Over the Years")+
   theme_bw()+
   theme(legend.position = "None")
+
+```
+
+
+```{r cluster}
+
+library(factoextra)
+
+lifeExp_factors <- read_csv(file = "data viz dataset/CLEANED-Life Expectancy - potential factors.csv",show_col_types = FALSE) 
+
+lifeExp_factors_cluster <- lifeExp_factors %>% 
+  clean_names() %>% 
+  filter(year==2014) %>% 
+  select("life_expectancy", "gdp") %>% 
+  na.omit()
+
+# lifeExp_factors %>% 
+#   clean_names() %>% 
+#   filter(year==2014) %>% 
+#   select("country", "life_expectancy", "gdp") %>% 
+#   slice_max(gdp, n=10) %>% 
+#   arrange(desc(gdp))
+# 
+# lifeExp_factors %>% 
+#   clean_names() %>% 
+#   filter(year==2014) %>% 
+#   select("country", "life_expectancy", "gdp") %>% 
+#   slice_max(life_expectancy, n=10) %>% 
+#   arrange(desc(life_expectancy))
+
+model_kmeans <- eclust(lifeExp_factors_cluster, "kmeans", k=3, graph = TRUE)
+
+#Let's check the components of this object.
+summary(model_kmeans)
+
+
+library(ggpubr)
+
+lifeExp_factors_withClusters<-mutate(lifeExp_factors_cluster, cluster = as.factor(model_kmeans$cluster))
+
+ggplot(lifeExp_factors_withClusters, aes(x = gdp, y = life_expectancy, color =  as.factor(cluster))) +
+  geom_jitter()+
+  labs(color = "Cluster",
+       title = "Clustering Countries by GDP and Life Expectancy")
 
 ```
 
