@@ -27,13 +27,6 @@ library(dplyr)
 
 
 
-```{r}
-
-
-```
-
-
-
 # The Blue Zones: Why do some areas of the world have higher life expectancies than others ?
 
 ```{r setup, include=FALSE}
@@ -62,6 +55,193 @@ We read through some articles about Blue Zones. Blue zones are regions in the wo
 We used hypothesis testing to check correlations between factors affecting life expectancy and life expectancy. We used linear regressions to identify  variables that are significantly impacting life expectancy in a particular country in different time points, and then we adjusted the regression model based on the initial regression result to increase its explaining power. We also used cluster analysis based on GDP and life expectancy to cluster world nations.
 
 ### (4) Results and conclusions. This is where you summarise and present your data analyses and communicate your main results. What did you find out? This might include tables, graphs, or verbal summaries. What did you learn about the problem or question you set out to investigate? 
+
+## Data Cleaning
+
+```{r Health_Nutrition_and_Population}
+
+df1 <- read_csv(file = 'data viz dataset/Health_Nutrition_and_Population.csv', na = "..") 
+
+# df1 <-df1[,-67]
+# df1 <-df1[,-66]
+
+df1 <- df1 %>% 
+  pivot_longer(names_to = "year",
+               values_to = "value",
+               cols = -(1:4)) %>% 
+  mutate(year = substr(year,1,4)) %>% 
+  drop_na() %>% 
+  janitor::clean_names() 
+
+df1 <- df1 %>% 
+  select("series_name", "country_name",	"country_code", "year", "value") %>% 
+  pivot_wider(names_from = "series_name",
+              values_from = "value") %>% 
+  janitor::clean_names() 
+
+    
+glimpse(df1)
+
+write.table(df1, file = "data viz dataset/CLEANED-Health_Nutrition_and_Population.csv", row.names = FALSE, na = "", sep = ",")
+#storing the data in csv file, removing row name and column name
+
+```
+
+# read the infant immortality file and cleaning it
+```{r infant-inmortality}
+
+
+df1 <- read_csv(file = 'data viz dataset/(NEEDS CLEAN)-infant-inmortality.csv',skip=4) 
+df1 <-df1[,-67]
+df1 <-df1[,-66]
+
+df1 <- df1 %>% 
+  drop_na() %>% 
+  pivot_longer(names_to = "year",
+               values_to = "infant_inmortality",
+               cols = -(1:4)) %>% 
+  janitor::clean_names()
+
+
+glimpse(df1)
+
+write.table(df1, file = "data viz dataset/CLEANED-infant-mortality.csv", row.names = FALSE, na = "", sep = ",")
+#storing the data in csv file, removing row name and column name
+
+
+
+```
+
+
+# read the life expectancy file and cleaning it
+
+```{r life-expectancy}
+
+#read in data, remove the first 3 rows
+df2 <- read_csv(file = 'data viz dataset/(NEEDS CLEAN) life-expectancy-2020.csv',skip=4) 
+df2 <-df2[,-67]
+df2 <-df2[,-66]
+
+df2 <- df2 %>% 
+  drop_na() %>% 
+  pivot_longer(names_to = "year",
+               values_to = "life_expectancy",
+               cols = -(1:4)) %>% 
+  janitor::clean_names()
+
+
+glimpse(df2)
+
+
+write_csv(df2, file = "data viz dataset/CLEANED-life-expectancy-2020.csv", na = "")
+#storing the data in csv file, removing row name and column name
+
+
+```
+
+#some graph
+
+```{r some graph}
+
+library(gapminder)
+gapminder %>% ggplot(aes(x = continent, y=lifeExp, group_by = year, colour = continent))+
+  facet_wrap(~year)+
+  geom_boxplot()+
+  labs(title = "Life Expectancy of Different Continents Over the Years")+
+  theme_bw()+
+  theme(legend.position = "None")
+
+```
+
+
+
+## Regression on life-expectancy/potential factor dataset
+
+#preparing data for regression
+```{r}
+
+
+lc=read.csv('data viz dataset/CLEANED-Life Expectancy - potential factors.csv')
+
+lc_clean=na.omit(lc)
+
+
+#filtering data to the latest available year (2014)
+lc_2014=lc_clean%>%filter(Year==2014)
+
+lc_2004=lc_clean%>%filter(Year==2004)
+
+lc_2000=lc_clean%>%filter(Year==2000)
+
+```
+
+#linear model on year 2014
+```{r}
+
+
+lm1 <-lm(Life.expectancy ~ infant.deaths
+ +  BMI  + Polio + percentage.expenditure + Hepatitis.B +Measles 
++ under.five.deaths +Total.expenditure + Diphtheria + HIV.AIDS +GDP +Population + Income.composition.of.resources +Schooling+Alcohol,lc_2014)
+
+summary(lm1)
+
+
+#adjusting the linear model 
+
+lm_new1=lm(Life.expectancy ~  Total.expenditure + HIV.AIDS + Income.composition.of.resources,lc_2014)
+  
+
+summary(lm_new1)
+  
+```
+
+
+Based on multi-variable linear regression result, we can see that, in 2014, Income Composition of Resources, and HIV rate significantly impacts the average life expectancy in a particular country. （We left out Adult Mortality to avoid perfect fit problem)
+
+
+#linear model on year 2004
+```{r}
+
+
+lm2 <-lm(Life.expectancy ~ infant.deaths
+ +  BMI  + Polio + percentage.expenditure + Hepatitis.B +Measles 
++ under.five.deaths +Total.expenditure + Diphtheria + HIV.AIDS +GDP +Population + Income.composition.of.resources +Schooling+Alcohol,lc_2004)
+
+
+summary(lm2)
+
+#adjusting the linear model 
+
+lm_new2=lm(Life.expectancy ~ HIV.AIDS +Schooling+under.five.deaths,lc_2004)
+  
+summary(lm_new2)
+
+```
+
+However, when we run multi-variable linear regression on year 2004 dataset, we can see that, in 2004, Income Composition of Resources no longer has an  impact on life expectancy. In its place, Schooling (education level), HIV rate, and under-five deaths are significantly impacting average life expectancy in a country.
+
+
+#linear model on year 2000
+```{r}
+
+
+lm3 <-lm(Life.expectancy ~  infant.deaths
+ +  BMI  + Polio + percentage.expenditure + Hepatitis.B +Measles 
++ under.five.deaths +Total.expenditure + Diphtheria + HIV.AIDS +GDP +Population + Income.composition.of.resources +Schooling+Alcohol,lc_2000)
+
+
+summary(lm3)
+
+
+lm_new3=lm(Life.expectancy ~ Adult.Mortality + HIV.AIDS +Schooling + Hepatitis.B
+,lc_2000)
+  
+summary(lm_new3)
+
+```
+
+Based on multi-variable linear regression result, we can see that, in 2000, Schooling, infant (under-5 death rate) and HIV rate significantly impact the average life expectancy in a particular country.
+
 
 
 
