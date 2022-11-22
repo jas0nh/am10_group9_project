@@ -1,25 +1,40 @@
 ---
 title: "The Blue Zones: Why do some areas of the world have higher life expectancies than others?"
 author: "Group 9"
-date: "2022-11-22"
+date: "`r Sys.Date()`"
 output:
   html_document:
-    theme: journal
-    highlight: tango
+    theme: flatly
+    highlight: zenburn
     number_sections: yes
     toc: yes
-    toc_float: no
-  pdf_document:
-    toc: yes
+    toc_float: yes
+    code_folding: show
 editor_options: 
   markdown: 
-    wrap: sentence
+    wrap: 72
 ---
 
+```{r, setup, include=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE, 
+  warning = FALSE, 
+  tidy=FALSE,     # display code as typed
+  size="small")   # slightly smaller font for code
+options(digits = 3)
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+# default figure size
+knitr::opts_chunk$set(
+  fig.width=6.75, 
+  fig.height=6.75,
+  fig.align = "center"
+)
 ```
+
+```{r load-libraries, include=FALSE}
+library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
+library(mosaic)
+library(ggthemes)
 
 
 ```{r load packages}
@@ -118,7 +133,7 @@ write_csv(df2, file = "data viz dataset/CLEANED-life-expectancy-2020.csv", na = 
 
 
 
-## Regression on life-expectancy/potential factor dataset
+# Regression on life-expectancy/potential factor dataset
 
 #preparing data for regression
 ```{r}
@@ -147,12 +162,46 @@ lm1 <-lm(life_expectancy ~ bmi + polio + percentage_expenditure + hepatitis_b +m
 
 summary(lm1)
 
+
 #adjusting the linear model 
 
 lm_new1=lm(life_expectancy ~  total_expenditure + hiv_aids + income_composition_of_resources, lc_2014)
   
 summary(lm_new1)
+
+#visualizing influence of significant features in the regression model 
+
+
+ggplot(lc_2014, aes(x = hiv_aids, y = life_expectancy))+
+  geom_point(colour="#234BA0",size=2.5)+
+  geom_smooth(colour="#4FE1C8")+
+  labs(title="Hiv_aids level in a country is negatively affecting life-expectancy in 2014")
+
+
+ggplot(lc_2014, aes(x = total_expenditure, y = life_expectancy))+
+  geom_point(colour="#234BA0",size=2.5)+
+  geom_smooth(colour="#4FE1C8")+
+  labs(title="Citizens' health related expenditure is positively affecting life-expectancy in 2014")
+
+ggplot(lc_2014, aes(x = schooling, y = life_expectancy))+
+  geom_point(colour="#234BA0",size=2.5)+
+  geom_smooth(colour="#4FE1C8")+
+  labs(title="Citizens' average education level is positively affecting life-expectancy in 2014")
+
+ggplot(lc_2014, aes(x =alcohol, y = life_expectancy))+
+  geom_point(colour="#234BA0",size=2.5)+
+  geom_smooth(colour="#4FE1C8")+
+  labs(title="Citizens' alcohol level is positively affecting life-expectancy in 2014")
   
+#Income composition of resources is a index that measures the government's ability to utilize its natural resources
+
+ggplot(lc_2014, aes(x =income_composition_of_resources, y = life_expectancy))+
+  geom_point(colour="#234BA0",size=2.5)+
+  geom_smooth(colour="#4FE1C8")+
+  labs(title="Governments' ability to utilize resources is positively affecting life-expectancy in 2014")
+
+
+
 ```
 
 
@@ -174,6 +223,35 @@ lm_new2=lm(life_expectancy ~ bmi + hiv_aids + income_composition_of_resources +g
   
 summary(lm_new2)
 
+
+ggplot(lc_2004, aes(x = hiv_aids, y = life_expectancy))+
+  geom_point(colour="#234BA0",size=2.5)+
+  geom_smooth(colour="#4FE1C8")+
+  labs(title="Hiv_aids level in a country is negatively affecting life-expectancy in 2004")
+
+ggplot(lc_2004, aes(x = schooling, y = life_expectancy))+
+  geom_point(colour="#234BA0",size=2.5)+
+  geom_smooth(colour="#4FE1C8")+
+  labs(title="Citizens' average education level is positively affecting life-expectancy in 2004")
+
+ggplot(lc_2004, aes(x =alcohol, y = life_expectancy))+
+  geom_point(colour="#234BA0",size=2.5)+
+  geom_smooth(colour="#4FE1C8")+
+  labs(title="Citizens' alcohol level is positively affecting life-expectancy in 2004")
+
+
+ggplot(lc_2004, aes(x = total_expenditure, y = life_expectancy))+
+  geom_point(colour="#234BA0",size=2.5)+
+  geom_smooth(colour="#4FE1C8")+
+  labs(title="Citizens' health related expenditure is positively affecting life-expectancy in 2004")
+  
+#Income composition of resources is a index that measures the government's ability to utilize its natural resources
+
+ggplot(lc_2004, aes(x =income_composition_of_resources, y = life_expectancy))+
+  geom_point(colour="#234BA0",size=2.5)+
+  geom_smooth(colour="#4FE1C8")+
+  labs(title="Governments' ability to utilize resources is positively affecting life-expectancy in 2004")
+
 ```
 
 However, when we run multi-variable linear regression on year 2004 dataset, we can see that, in 2004, Income Composition of Resources no longer has an  impact on life expectancy. In its place, Schooling (education level), HIV rate, and under-five deaths are significantly impacting average life expectancy in a country.
@@ -187,17 +265,49 @@ lm3 <- lm(life_expectancy ~ bmi + polio + percentage_expenditure + hepatitis_b +
 
 summary(lm3)
 
-lm_new3=lm(life_expectancy ~ hepatitis_b  + adult_mortality + hiv_aids +schooling + hepatitis_b,lc_2000)
+lm_new3=lm(life_expectancy ~ hepatitis_b + hiv_aids +schooling +income_composition_of_resources ,lc_2000)
   
 summary(lm_new3)
 
+
+
+
+
+ggplot(lc_2000, aes(x = schooling, y = life_expectancy))+
+  geom_point(colour="#234BA0",size=2.5)+
+  geom_smooth(colour="#4FE1C8")+
+  labs(title="Citizens' average education level is positively affecting life-expectancy in 2000")
+
+
+ggplot(lc_2000, aes(x =alcohol, y = life_expectancy))+
+  geom_point(colour="#234BA0",size=2.5)+
+  geom_smooth(colour="#4FE1C8")+
+  labs(title="Citizens' average consumption of alcohol is positively affecting life-expectancy in 2000")
+
+
+
+#Income composition of resources is a index that measures the government's ability to utilize its natural resources
+
+ggplot(lc_2000, aes(x =income_composition_of_resources, y = life_expectancy))+
+  geom_point(colour="#234BA0",size=2.5)+
+  geom_smooth(colour="#4FE1C8")+
+  labs(title="Governments' ability to utilize resources is positively affecting life-expectancy in 2000")
+
+
+
 ```
 
-Based on multi-variable linear regression result, we can see that, in 2000, Schooling, infant (under-5 death rate) and HIV rate significantly impact the average life expectancy in a particular country.
+Based on the multi-variable regression result and its visualization, we've noticed two interesting and counterintuitive facts.
+
+(1). Citizens' average alcohol consumption is positively impacting life expectancy in this country. We propose the theory that this is because alcohol can (a) improve cardiovascular health, and (b)improve individuals' emotion
+
+(2). Countries' GDP level is not significantly affecting this country's average life expectancy. We think it's because of potential outliers and will do further analysis in the next part.
 
 
 
-##Regression Visualization 
+
+
+##Further Visualization 
 
 
 ```{r some graph}
@@ -206,7 +316,9 @@ library(gapminder)
 gapminder %>% ggplot(aes(x = continent, y=lifeExp, group_by = year, colour = continent))+
   facet_wrap(~year)+
   geom_boxplot()+
-  labs(title = "Life Expectancy of Different Continents Over the Years")+
+  labs(
+    title ="Life Expectancy in Asia and Africa is growing fastest",
+    subtitle = "Life Expectancy of Different Continents Over the Years")+
   theme_bw()+
   theme(legend.position = "None")
 
