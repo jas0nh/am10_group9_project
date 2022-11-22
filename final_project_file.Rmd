@@ -11,30 +11,25 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-dataset1: life expectancy - potential factors 
-- every country from 2000 to 2015 (life expectancy, some diseases,..etc) 
-- BMI 
-
-
-
-
-
-Blue zones are regions in the world where people are speculated to live longer than average; the term was coined by Gianni Pes, Michel Poulain and Dan Buettner. There are five blues zones: Okinawa (Japan), Sardinia (Italy), Nicoya (Costa Rica), Icaria (Greece) and Loma Linda (California). 
-
-Our goal is to analyze different factors, such as; nutrition, lifestyle, exercise, climate, genetics, hygiene,... and the impact they have on longevity in different parts of the world. 
-
-
 ### (1) A statement of the question or purpose. What problems or questions did you set out to analyse? What were the key issues raised? 
 
+(1) Our goal is to analyze different factors, such as; nutrition, lifestyle, exercise, climate, genetics, hygiene,... and the impact they have on longevity in different parts of the world.
+
+More specifically we aim to answer these questions:
+
+a. Why do people living in blue zones live longer than others ?
+b. How and why did longevity change over time for these countries ?
+c. Which factors have the biggest influence on life expectancy ?
 
 
 ### (2) The background and preparation for conducting the project. How did you prepare for the project? What sources or background readings did you consult? What information did you use in developing your ideas from the conceptual stage to the finished project? 
 
+We read through some articles about Blue Zones. Blue zones are regions in the world where people are speculated to live longer than average; the term was coined by Gianni Pes, Michel Poulain and Dan Buettner. There are five blues zones: Okinawa (Japan), Sardinia (Italy), Nicoya (Costa Rica), Icaria (Greece) and Loma Linda (California). We also looked up some research about some potential factors that could contribute to life expectancy in a region (eg. infant mortality rate, GDP, education level, and different deseases)
 
 
 ### (3) Methodology. What did you do, and how did you do it? What statistical techniques did you use — for instance, scatterplots, correlation, confidence intervals, linear/logistic regression? 
 
-
+We used hypothesis testing to check correlations between factors affecting life expectancy and life expectancy. We used linear regressions to identify  variables that are significantly impacting life expectancy in a particular country in different time points, and then we adjusted the regression model based on the initial regression result to increase its explaining power. We also used cluster analysis based on GDP and life expectancy to cluster world nations.
 
 ### (4) Results and conclusions. This is where you summarise and present your data analyses and communicate your main results. What did you find out? This might include tables, graphs, or verbal summaries. What did you learn about the problem or question you set out to investigate? 
 
