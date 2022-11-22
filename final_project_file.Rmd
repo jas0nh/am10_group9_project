@@ -69,36 +69,6 @@ We used hypothesis testing to check correlations between factors affecting life 
 
 ## Data Cleaning
 
-```{r Health_Nutrition_and_Population}
-
-df1 <- read_csv(file = 'data viz dataset/Health_Nutrition_and_Population.csv', na = "..", show_col_types = FALSE) 
-
-# df1 <-df1[,-67]
-# df1 <-df1[,-66]
-
-df1 <- df1 %>% 
-  pivot_longer(names_to = "year",
-               values_to = "value",
-               cols = -(1:4)) %>% 
-  mutate(year = substr(year,1,4)) %>% 
-  drop_na() %>% 
-  janitor::clean_names() 
-
-df1 <- df1 %>% 
-  select("series_name", "country_name",	"country_code", "year", "value") %>% 
-  pivot_wider(names_from = "series_name",
-              values_from = "value") %>% 
-  janitor::clean_names() 
-
-    
-glimpse(df1)
-
-write.table(df1, file = "data viz dataset/CLEANED-Health_Nutrition_and_Population.csv", row.names = FALSE, na = "", sep = ",")
-#storing the data in csv file, removing row name and column name
-
-
-```
-
 ```{r infant-inmortality}
 
 
@@ -244,9 +214,7 @@ lc_2000=lc_clean%>%filter(year==2000)
 ```{r}
 
 
-lm1 <-lm(life_expectancy ~ infant_deaths
- + bmi + polio + percentage_expenditure + hepatitis_b +measles 
-+ under_five_deaths +total_expenditure + diphtheria + hiv_aids + gdp + income_composition_of_resources + schooling+ alcohol,lc_2014)
+lm1 <-lm(life_expectancy ~ bmi + polio + percentage_expenditure + hepatitis_b +measles +total_expenditure + diphtheria + hiv_aids + gdp + income_composition_of_resources + schooling+ alcohol,lc_2014)
 
 summary(lm1)
 
@@ -266,16 +234,14 @@ Based on multi-variable linear regression result, we can see that, in 2014, Inco
 ```{r}
 
 
-lm2 <- lm(life_expectancy ~ infant_deaths
- + bmi + polio + percentage_expenditure + hepatitis_b +measles 
-+ under_five_deaths +total_expenditure + diphtheria + hiv_aids + gdp + income_composition_of_resources + schooling+ alcohol,lc_2004)
+lm2 <-lm(life_expectancy ~ bmi + polio + percentage_expenditure + hepatitis_b +measles +total_expenditure + diphtheria + hiv_aids + gdp + income_composition_of_resources + schooling+ alcohol,lc_2004)
 
 
 summary(lm2)
 
 #adjusting the linear model 
 
-lm_new2=lm(life_expectancy ~ hiv_aids + schooling + under_five_deaths,lc_2004)
+lm_new2=lm(life_expectancy ~ bmi + hiv_aids + income_composition_of_resources +gdp +alcohol+schooling,lc_2004)
   
 summary(lm_new2)
 
@@ -288,14 +254,11 @@ However, when we run multi-variable linear regression on year 2004 dataset, we c
 ```{r}
 
 
-lm3 <- lm(life_expectancy ~ infant_deaths
- + bmi + polio + percentage_expenditure + hepatitis_b +measles 
-+ under_five_deaths + total_expenditure + diphtheria + hiv_aids + gdp + income_composition_of_resources + schooling+ alcohol,lc_2000)
+lm3 <- lm(life_expectancy ~ bmi + polio + percentage_expenditure + hepatitis_b +measles +total_expenditure + diphtheria + hiv_aids + gdp + income_composition_of_resources + schooling+ alcohol,lc_2000)
 
 summary(lm3)
 
-lm_new3=lm(life_expectancy ~ adult_mortality + hiv_aids +schooling + hepatitis_b
-,lc_2000)
+lm_new3=lm(life_expectancy ~ hepatitis_b  + adult_mortality + hiv_aids +schooling + hepatitis_b,lc_2000)
   
 summary(lm_new3)
 
@@ -320,6 +283,11 @@ Based on multi-variable linear regression result, we can see that, in 2000, Scho
 
 ### (5) Discussion and critique. What did you learn about the process of carrying out your project? What went wrong, and how could you improve it next time? For instance, did any sources of bias creep into your survey or experiment? What advice would you give future students? 
 
+(1)At first, we used every variable in the data set to do the multi-variable regression, without assessing potential perfect fit and co-linearity problem. For example, "Schooling" and "Income" are likely to be linearly related; "Infant mortality" and "under-five deaths" are likely to be linearly relater; and "Adult mortality" is likely to perfectly explain the dependent variable "life expectancy". Therefore, we took these variables out of the model. 
 
+(2)For features like "infant mortality", and "under-five deaths", even if they are significantly related to the dependent variable, it cannot generate any useful explanatory result. There fore we should focus on variables that could potentially be well explained.
+
+
+For future references, we should be more careful when dealing with feature choice and feature engineering, especially focus on variable's explaining power and multi-colinearity problem.
 
 
