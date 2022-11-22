@@ -3,13 +3,9 @@ title: "The Blue Zones: Why do some areas of the world have higher life expectan
 author: "Group 9"
 date: "`r Sys.Date()`"
 output:
-  html_document:
-    theme: flatly
-    highlight: zenburn
-    number_sections: yes
-    toc: yes
-    toc_float: yes
-    code_folding: show
+  pdf_document:
+    toc: false
+    latex_engine: xelatex
 editor_options: 
   markdown: 
     wrap: 72
