@@ -1,10 +1,28 @@
 ---
-title: "Final_project"
-output: html_document
-date: "2022-11-21"
+title: "The Blue Zones: Why do some areas of the world have higher life expectancies than others?"
+author: "Group 9"
+date: "2022-11-22"
+output:
+  html_document:
+    theme: journal
+    highlight: tango
+    number_sections: yes
+    toc: yes
+    toc_float: no
+  pdf_document:
+    toc: yes
+editor_options: 
+  markdown: 
+    wrap: sentence
 ---
-#getting the pacakages ready
-```{r}
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r load packages}
 library(vroom)
 library(tidyverse)
 library(lubridate)
@@ -26,15 +44,7 @@ library(dplyr)
 ```
 
 
-
-# The Blue Zones: Why do some areas of the world have higher life expectancies than others ?
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-
-### (1) A statement of the question or purpose. What problems or questions did you set out to analyse? What were the key issues raised? 
+## (1) A statement of the question or purpose. What problems or questions did you set out to analyse? What were the key issues raised? 
 
 (1) Our goal is to analyze different factors, such as; nutrition, lifestyle, exercise, climate, genetics, hygiene,... and the impact they have on longevity in different parts of the world.
 
@@ -45,22 +55,23 @@ b. How and why did longevity change over time for these countries ?
 c. Which factors have the biggest influence on life expectancy ?
 
 
-### (2) The background and preparation for conducting the project. How did you prepare for the project? What sources or background readings did you consult? What information did you use in developing your ideas from the conceptual stage to the finished project? 
+## (2) The background and preparation for conducting the project. How did you prepare for the project? What sources or background readings did you consult? What information did you use in developing your ideas from the conceptual stage to the finished project? 
 
 We read through some articles about Blue Zones. Blue zones are regions in the world where people are speculated to live longer than average; the term was coined by Gianni Pes, Michel Poulain and Dan Buettner. There are five blues zones: Okinawa (Japan), Sardinia (Italy), Nicoya (Costa Rica), Icaria (Greece) and Loma Linda (California). We also looked up some research about some potential factors that could contribute to life expectancy in a region (eg. infant mortality rate, GDP, education level, and different deseases)
 
 
-### (3) Methodology. What did you do, and how did you do it? What statistical techniques did you use — for instance, scatterplots, correlation, confidence intervals, linear/logistic regression? 
+## (3) Methodology. What did you do, and how did you do it? What statistical techniques did you use — for instance, scatterplots, correlation, confidence intervals, linear/logistic regression? 
 
 We used hypothesis testing to check correlations between factors affecting life expectancy and life expectancy. We used linear regressions to identify  variables that are significantly impacting life expectancy in a particular country in different time points, and then we adjusted the regression model based on the initial regression result to increase its explaining power. We also used cluster analysis based on GDP and life expectancy to cluster world nations.
 
-### (4) Results and conclusions. This is where you summarise and present your data analyses and communicate your main results. What did you find out? This might include tables, graphs, or verbal summaries. What did you learn about the problem or question you set out to investigate? 
+## (4) Results and conclusions. This is where you summarise and present your data analyses and communicate your main results. What did you find out? This might include tables, graphs, or verbal summaries. What did you learn about the problem or question you set out to investigate? 
+
 
 ## Data Cleaning
 
 ```{r Health_Nutrition_and_Population}
 
-df1 <- read_csv(file = 'data viz dataset/Health_Nutrition_and_Population.csv', na = "..") 
+df1 <- read_csv(file = 'data viz dataset/Health_Nutrition_and_Population.csv', na = "..", show_col_types = FALSE) 
 
 # df1 <-df1[,-67]
 # df1 <-df1[,-66]
@@ -85,13 +96,13 @@ glimpse(df1)
 write.table(df1, file = "data viz dataset/CLEANED-Health_Nutrition_and_Population.csv", row.names = FALSE, na = "", sep = ",")
 #storing the data in csv file, removing row name and column name
 
+
 ```
 
-# read the infant immortality file and cleaning it
 ```{r infant-inmortality}
 
 
-df1 <- read_csv(file = 'data viz dataset/(NEEDS CLEAN)-infant-inmortality.csv',skip=4) 
+df1 <- read_csv(file = 'data viz dataset/(NEEDS CLEAN)-infant-inmortality.csv',skip=4, show_col_types = FALSE) 
 df1 <-df1[,-67]
 df1 <-df1[,-66]
 
@@ -108,17 +119,13 @@ glimpse(df1)
 write.table(df1, file = "data viz dataset/CLEANED-infant-mortality.csv", row.names = FALSE, na = "", sep = ",")
 #storing the data in csv file, removing row name and column name
 
-
-
 ```
 
-
-# read the life expectancy file and cleaning it
 
 ```{r life-expectancy}
 
 #read in data, remove the first 3 rows
-df2 <- read_csv(file = 'data viz dataset/(NEEDS CLEAN) life-expectancy-2020.csv',skip=4) 
+df2 <- read_csv(file = 'data viz dataset/(NEEDS CLEAN) life-expectancy-2020.csv',skip=4, show_col_types = FALSE) 
 df2 <-df2[,-67]
 df2 <-df2[,-66]
 
@@ -139,7 +146,21 @@ write_csv(df2, file = "data viz dataset/CLEANED-life-expectancy-2020.csv", na = 
 
 ```
 
-#some graph
+
+
+```{r gapminder boxplot}
+
+library(gapminder)
+gapminder %>% ggplot(aes(x = continent, y=lifeExp, group_by = year, colour = continent))+
+  facet_wrap(~year)+
+  geom_boxplot()+
+  labs(title = "Life Expectancy of Different Continents Over the Years")+
+  theme_bw()+
+  theme(legend.position = "None")
+
+```
+
+##some graph
 
 ```{r some graph}
 
@@ -154,6 +175,49 @@ gapminder %>% ggplot(aes(x = continent, y=lifeExp, group_by = year, colour = con
 ```
 
 
+```{r clustering gdp lifeexp}
+
+library(factoextra)
+
+lifeExp_factors <- read_csv(file = "data viz dataset/CLEANED-Life Expectancy - potential factors.csv",show_col_types = FALSE) 
+
+lifeExp_factors_cluster <- lifeExp_factors %>% 
+  clean_names() %>% 
+  filter(year==2014) %>% 
+  select("life_expectancy", "gdp") %>% 
+  na.omit()
+
+# lifeExp_factors %>% 
+#   clean_names() %>% 
+#   filter(year==2014) %>% 
+#   select("country", "life_expectancy", "gdp") %>% 
+#   slice_max(gdp, n=10) %>% 
+#   arrange(desc(gdp))
+# 
+# lifeExp_factors %>% 
+#   clean_names() %>% 
+#   filter(year==2014) %>% 
+#   select("country", "life_expectancy", "gdp") %>% 
+#   slice_max(life_expectancy, n=10) %>% 
+#   arrange(desc(life_expectancy))
+
+model_kmeans <- eclust(lifeExp_factors_cluster, "kmeans", k=3, graph = TRUE)
+
+#Let's check the components of this object.
+summary(model_kmeans)
+
+
+library(ggpubr)
+
+lifeExp_factors_withClusters<-mutate(lifeExp_factors_cluster, cluster = as.factor(model_kmeans$cluster))
+
+ggplot(lifeExp_factors_withClusters, aes(x = gdp, y = life_expectancy, color =  as.factor(cluster))) +
+  geom_jitter()+
+  labs(color = "Cluster",
+       title = "Clustering Countries by GDP and Life Expectancy")
+
+```
+
 
 ## Regression on life-expectancy/potential factor dataset
 
@@ -161,17 +225,18 @@ gapminder %>% ggplot(aes(x = continent, y=lifeExp, group_by = year, colour = con
 ```{r}
 
 
-lc=read.csv('data viz dataset/CLEANED-Life Expectancy - potential factors.csv')
+lc <- read.csv('data viz dataset/CLEANED-Life Expectancy - potential factors.csv') %>% 
+  clean_names()
 
-lc_clean=na.omit(lc)
+lc_clean <- na.omit(lc)
 
 
 #filtering data to the latest available year (2014)
-lc_2014=lc_clean%>%filter(Year==2014)
+lc_2014=lc_clean%>%filter(year==2014)
 
-lc_2004=lc_clean%>%filter(Year==2004)
+lc_2004=lc_clean%>%filter(year==2004)
 
-lc_2000=lc_clean%>%filter(Year==2000)
+lc_2000=lc_clean%>%filter(year==2000)
 
 ```
 
@@ -179,18 +244,16 @@ lc_2000=lc_clean%>%filter(Year==2000)
 ```{r}
 
 
-lm1 <-lm(Life.expectancy ~ infant.deaths
- +  BMI  + Polio + percentage.expenditure + Hepatitis.B +Measles 
-+ under.five.deaths +Total.expenditure + Diphtheria + HIV.AIDS +GDP/Population + Income.composition.of.resources +Schooling+ Alcohol,lc_2014)
+lm1 <-lm(life_expectancy ~ infant_deaths
+ + bmi + polio + percentage_expenditure + hepatitis_b +measles 
++ under_five_deaths +total_expenditure + diphtheria + hiv_aids + gdp + income_composition_of_resources + schooling+ alcohol,lc_2014)
 
 summary(lm1)
 
-
 #adjusting the linear model 
 
-lm_new1=lm(Life.expectancy ~  Total.expenditure + HIV.AIDS + Income.composition.of.resources,lc_2014)
+lm_new1=lm(life_expectancy ~  total_expenditure + hiv_aids + income_composition_of_resources, lc_2014)
   
-
 summary(lm_new1)
   
 ```
@@ -203,16 +266,16 @@ Based on multi-variable linear regression result, we can see that, in 2014, Inco
 ```{r}
 
 
-lm2 <-lm(Life.expectancy ~ infant.deaths
- +  BMI  + Polio + percentage.expenditure + Hepatitis.B +Measles 
-+ under.five.deaths +Total.expenditure + Diphtheria + HIV.AIDS +GDP +Population + Income.composition.of.resources +Schooling+Alcohol,lc_2004)
+lm2 <- lm(life_expectancy ~ infant_deaths
+ + bmi + polio + percentage_expenditure + hepatitis_b +measles 
++ under_five_deaths +total_expenditure + diphtheria + hiv_aids + gdp + income_composition_of_resources + schooling+ alcohol,lc_2004)
 
 
 summary(lm2)
 
 #adjusting the linear model 
 
-lm_new2=lm(Life.expectancy ~ HIV.AIDS +Schooling+under.five.deaths,lc_2004)
+lm_new2=lm(life_expectancy ~ hiv_aids + schooling + under_five_deaths,lc_2004)
   
 summary(lm_new2)
 
@@ -225,13 +288,13 @@ However, when we run multi-variable linear regression on year 2004 dataset, we c
 ```{r}
 
 
-lm3 <-lm(Life.expectancy ~  infant.deaths
- +  BMI  + Polio + percentage.expenditure + Hepatitis.B +Measles 
-+ under.five.deaths +Total.expenditure + Diphtheria + HIV.AIDS +GDP +Population + Income.composition.of.resources +Schooling+Alcohol,lc_2000)
+lm3 <- lm(life_expectancy ~ infant_deaths
+ + bmi + polio + percentage_expenditure + hepatitis_b +measles 
++ under_five_deaths + total_expenditure + diphtheria + hiv_aids + gdp + income_composition_of_resources + schooling+ alcohol,lc_2000)
 
 summary(lm3)
 
-lm_new3=lm(Life.expectancy ~ Adult.Mortality + HIV.AIDS +Schooling + Hepatitis.B
+lm_new3=lm(life_expectancy ~ adult_mortality + hiv_aids +schooling + hepatitis_b
 ,lc_2000)
   
 summary(lm_new3)
