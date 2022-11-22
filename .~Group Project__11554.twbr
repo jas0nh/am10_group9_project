@@ -670,6 +670,7 @@
       <column caption='Under-Five Deaths' datatype='integer' name='[under-five deaths ]' role='measure' type='quantitative' />
       <column datatype='integer' name='[year (CLEANED-infant-mortality.csv)]' role='dimension' type='quantitative' />
       <column caption='Year' datatype='integer' name='[year]' role='dimension' type='quantitative' />
+      <column-instance column='[BMI ]' derivation='Avg' name='[avg:BMI :qk]' pivot='key' type='quantitative' />
       <column-instance column='[GDP]' derivation='Avg' name='[avg:GDP:qk]' pivot='key' type='quantitative' />
       <column-instance column='[life_expectancy]' derivation='Avg' name='[avg:life_expectancy:qk]' pivot='key' type='quantitative' />
       <column-instance column='[country_name]' derivation='None' name='[none:country_name:nk]' pivot='key' type='nominal' />
@@ -1397,6 +1398,23 @@
       <date-options start-of-week='monday' />
       <analytic-model>
         <name>
+          <field name='[AnalyticModel:{9df65c32-d28b-4000-b63e-cdf0d8ff91a7}]' />
+        </name>
+        <analytic-model-specifications class='cluster-specifications'>
+          <analysis-fields>
+            <field name='[federated.0g7mez71238gnk1c1mh2y1oczqh0].[avg:BMI :qk]' />
+            <field name='[federated.0g7mez71238gnk1c1mh2y1oczqh0].[avg:GDP:qk]' />
+            <field name='[federated.0g7mez71238gnk1c1mh2y1oczqh0].[avg:life_expectancy:qk]' />
+          </analysis-fields>
+          <filter-fields />
+          <lod-fields />
+          <number-of-desired-clusters>0</number-of-desired-clusters>
+          <is-dissagregate>false</is-dissagregate>
+        </analytic-model-specifications>
+        <result-fields />
+      </analytic-model>
+      <analytic-model>
+        <name>
           <field name='[AnalyticModel:{c20d16ec-8f89-4178-bb2f-d3d1e5339421}]' />
         </name>
         <analytic-model-specifications class='cluster-specifications'>
@@ -1516,6 +1534,62 @@
             <datasource caption='CLEANED-life-expectancy-2020' name='federated.0g7mez71238gnk1c1mh2y1oczqh0' />
           </datasources>
           <datasource-dependencies datasource='federated.0g7mez71238gnk1c1mh2y1oczqh0'>
+            <column auto-hidden='true' caption='Clusters (1)' datatype='integer' hidden='true' is-adhoc-cluster='true' name='[AdhocCluster:2]' parent-model='[AnalyticModel:{9df65c32-d28b-4000-b63e-cdf0d8ff91a7}]' role='dimension' type='ordinal'>
+              <aliases>
+                <alias key='-1' value='Cluster Outliers' />
+                <alias key='0' value='Not Clustered' />
+                <alias key='1' value='Cluster 1' />
+                <alias key='2' value='Cluster 2' />
+                <alias key='3' value='Cluster 3' />
+                <alias key='4' value='Cluster 4' />
+                <alias key='5' value='Cluster 5' />
+                <alias key='6' value='Cluster 6' />
+                <alias key='7' value='Cluster 7' />
+                <alias key='8' value='Cluster 8' />
+                <alias key='9' value='Cluster 9' />
+                <alias key='10' value='Cluster 10' />
+                <alias key='11' value='Cluster 11' />
+                <alias key='12' value='Cluster 12' />
+                <alias key='13' value='Cluster 13' />
+                <alias key='14' value='Cluster 14' />
+                <alias key='15' value='Cluster 15' />
+                <alias key='16' value='Cluster 16' />
+                <alias key='17' value='Cluster 17' />
+                <alias key='18' value='Cluster 18' />
+                <alias key='19' value='Cluster 19' />
+                <alias key='20' value='Cluster 20' />
+                <alias key='21' value='Cluster 21' />
+                <alias key='22' value='Cluster 22' />
+                <alias key='23' value='Cluster 23' />
+                <alias key='24' value='Cluster 24' />
+                <alias key='25' value='Cluster 25' />
+                <alias key='26' value='Cluster 26' />
+                <alias key='27' value='Cluster 27' />
+                <alias key='28' value='Cluster 28' />
+                <alias key='29' value='Cluster 29' />
+                <alias key='30' value='Cluster 30' />
+                <alias key='31' value='Cluster 31' />
+                <alias key='32' value='Cluster 32' />
+                <alias key='33' value='Cluster 33' />
+                <alias key='34' value='Cluster 34' />
+                <alias key='35' value='Cluster 35' />
+                <alias key='36' value='Cluster 36' />
+                <alias key='37' value='Cluster 37' />
+                <alias key='38' value='Cluster 38' />
+                <alias key='39' value='Cluster 39' />
+                <alias key='40' value='Cluster 40' />
+                <alias key='41' value='Cluster 41' />
+                <alias key='42' value='Cluster 42' />
+                <alias key='43' value='Cluster 43' />
+                <alias key='44' value='Cluster 44' />
+                <alias key='45' value='Cluster 45' />
+                <alias key='46' value='Cluster 46' />
+                <alias key='47' value='Cluster 47' />
+                <alias key='48' value='Cluster 48' />
+                <alias key='49' value='Cluster 49' />
+                <alias key='50' value='Cluster 50' />
+              </aliases>
+            </column>
             <column caption='Bmi' datatype='real' name='[BMI ]' role='measure' type='quantitative' />
             <column datatype='string' name='[Country]' role='dimension' semantic-role='[Country].[ISO3166_2]' type='nominal' />
             <column datatype='real' name='[GDP]' role='measure' type='quantitative' />
@@ -1523,7 +1597,9 @@
             <column-instance column='[GDP]' derivation='Avg' name='[avg:GDP:qk]' pivot='key' type='quantitative' />
             <column-instance column='[life_expectancy]' derivation='Avg' name='[avg:life_expectancy:qk]' pivot='key' type='quantitative' />
             <column caption='Life Expectancy' datatype='real' name='[life_expectancy]' role='measure' type='quantitative' />
+            <column-instance column='[AdhocCluster:2]' derivation='None' is-adhoc-cluster='true' name='[none:AdhocCluster:2:ok]' pivot='key' type='ordinal' />
             <column-instance column='[Country]' derivation='None' name='[none:Country:nk]' pivot='key' type='nominal' />
+            <style />
           </datasource-dependencies>
           <filter class='quantitative' column='[federated.0g7mez71238gnk1c1mh2y1oczqh0].[avg:life_expectancy:qk]' included-values='non-null' />
           <slices>
@@ -1545,6 +1621,7 @@
             <encodings>
               <size column='[federated.0g7mez71238gnk1c1mh2y1oczqh0].[avg:life_expectancy:qk]' />
               <lod column='[federated.0g7mez71238gnk1c1mh2y1oczqh0].[none:Country:nk]' />
+              <color column='[federated.0g7mez71238gnk1c1mh2y1oczqh0].[none:AdhocCluster:2:ok]' />
             </encodings>
             <style>
               <style-rule element='mark'>
@@ -1953,7 +2030,7 @@
       </cards>
       <simple-id uuid='{72D1A4DC-2C2E-43DD-81FC-929CC28F9B47}' />
     </window>
-    <window class='worksheet' maximized='true' name='mortality'>
+    <window class='worksheet' name='mortality'>
       <cards>
         <edge name='left'>
           <strip size='160'>
@@ -1981,7 +2058,7 @@
       </cards>
       <simple-id uuid='{A6059502-666C-4D3D-A165-320D2F2D18D8}' />
     </window>
-    <window class='worksheet' name='Sheet 3'>
+    <window class='worksheet' maximized='true' name='Sheet 3'>
       <cards>
         <edge name='left'>
           <strip size='160'>
@@ -2011,7 +2088,7 @@
       <viewpoint>
         <current-page>
           <multibucket>
-            <bucket>&quot;Bhutan&quot;</bucket>
+            <bucket>&quot;Jordan&quot;</bucket>
           </multibucket>
         </current-page>
       </viewpoint>
@@ -2052,6 +2129,7 @@
         <edge name='right'>
           <strip size='160'>
             <card pane-specification-id='0' param='[federated.0g7mez71238gnk1c1mh2y1oczqh0].[avg:life_expectancy:qk]' type='size' />
+            <card pane-specification-id='0' param='[federated.0g7mez71238gnk1c1mh2y1oczqh0].[none:AdhocCluster:2:ok]' type='color' />
           </strip>
         </edge>
       </cards>

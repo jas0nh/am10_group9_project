@@ -46,9 +46,15 @@ df1 <- df1 %>%
                cols = -(1:4)) %>% 
   mutate(year = substr(year,1,4)) %>% 
   drop_na() %>% 
-  janitor::clean_names()
+  janitor::clean_names() 
 
+df1 <- df1 %>% 
+  select("series_name", "country_name",	"country_code", "year", "value") %>% 
+  pivot_wider(names_from = "series_name",
+              values_from = "value") %>% 
+  janitor::clean_names() 
 
+    
 glimpse(df1)
 
 write.table(df1, file = "data viz dataset/CLEANED-Health_Nutrition_and_Population.csv", row.names = FALSE, na = "", sep = ",")
@@ -108,3 +114,18 @@ write_csv(df2, file = "data viz dataset/CLEANED-life-expectancy-2020.csv", na = 
 
 
 ```
+
+##some graph
+
+```{r some graph}
+
+library(gapminder)
+gapminder %>% ggplot(aes(x = continent, y=lifeExp, group_by = year, colour = continent))+
+  facet_wrap(~year)+
+  geom_boxplot()+
+  labs(title = "Life Expectancy of Different Continents Over the Years")+
+  theme_bw()+
+  theme(legend.position = "None")
+
+```
+
